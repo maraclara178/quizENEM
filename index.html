@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz ENEM | Áreas do Conhecimento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --roxo-escuro: #1a0a2e;
+            --roxo-medio: #2d1b4e;
+            --roxo-claro: #6d28d9;
+            --roxo-neon: #a855f7;
+            --roxo-brilho: #c084fc;
+            --preto: #0a0a0a;
+            --preto-card: #111111;
+            --branco: #ffffff;
+            --cinza-claro: #e0e0e0;
+            --verde: #10b981;
+            --vermelho: #ef4444;
+            --dourado: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--preto);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--branco);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(109, 40, 217, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background: var(--roxo-neon);
+            filter: blur(60px);
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { width: 300px; height: 300px; top: 10%; left: 5%; }
+        .particle:nth-child(2) { width: 200px; height: 200px; bottom: 15%; right: 10%; animation-delay: -7s; }
+        .particle:nth-child(3) { width: 250px; height: 250px; top: 50%; left: 60%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 40px;
+            padding: 45px 35px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(168, 85, 247, 0.15), 0 0 40px rgba(109, 40, 217, 0.2);
+            border: 1px solid var(--glass-border);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--roxo-brilho), var(--roxo-neon), #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1em;
+            font-weight: 400;
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--roxo-claro), var(--roxo-neon));
+            margin: 0 auto 30px;
+            border-radius: 10px;
+        }
+
+        .name-screen {
+            text-align: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .name-screen h2 {
+            font-weight: 500;
+            color: var(--cinza-claro);
+            margin-bottom: 30px;
+            font-size: 1.4em;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 80%;
+            max-width: 420px;
+            margin: 0 auto 25px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 60px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 1.15em;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 300;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--roxo-neon);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.25), 0 0 0 4px rgba(168, 85, 247, 0.05);
+        }
+
+        .btn {
+            padding: 15px 38px;
+            border-radius: 60px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--roxo-claro), #7c3aed);
+            color: white;
+            box-shadow: 0 8px 30px rgba(109, 40, 217, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(109, 40, 217, 0.6), 0 0 0 2px rgba(168, 85, 247, 0.2);
+            background: linear-gradient(135deg, #7c3aed, var(--roxo-neon));
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-finish:hover {
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+
+        .user-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px 25px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-weight: 500;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .user-badge .name-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--roxo-brilho);
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .user-badge .name-display .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--roxo-claro), var(--roxo-neon));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1em;
+            color: white;
+        }
+
+        .user-badge .area-tag {
+            background: rgba(168, 85, 247, 0.15);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            color: var(--roxo-brilho);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            display: none;
+        }
+
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @media (max-width: 650px) {
+            .areas-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+        }
+
+        .area-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .area-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .area-card:hover::before {
+            opacity: 1;
+        }
+
+        .area-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(168, 85, 247, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .area-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .area-name {
+            font-weight: 700;
+            font-size: 1.25em;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #fff, var(--roxo-brilho));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .area-disciplines {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-area {
+            display: none;
+            animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-area-name-tag {
+            background: rgba(168, 85, 247, 0.15);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--roxo-brilho);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+
+        .progress-wrapper {
+            flex: 1;
+            min-width: 150px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--roxo-claro), var(--roxo-neon), var(--roxo-brilho));
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+
+        .question-counter {
+            font-weight: 600;
+            color: var(--roxo-brilho);
+            font-size: 1em;
+            white-space: nowrap;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+        }
+
+        .question-number {
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: var(--roxo-claro);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4);
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 500;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px;
+            border-radius: 18px;
+            text-align: left;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateX(8px);
+            color: white;
+        }
+
+        .option-letter {
+            background: rgba(255, 255, 255, 0.08);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not(:disabled) .option-letter {
+            background: var(--roxo-claro);
+            color: white;
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--verde);
+            color: #6ee7b7;
+        }
+
+        .option-btn.correct .option-letter {
+            background: var(--verde);
+            color: white;
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--vermelho);
+            color: #fca5a5;
+        }
+
+        .option-btn.wrong .option-letter {
+            background: var(--vermelho);
+            color: white;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 14px 20px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: none;
+            animation: fadeInUp 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .feedback.correct-fb {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: block;
+        }
+
+        .feedback.wrong-fb {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            display: block;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .result-score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(var(--roxo-neon) 0deg, var(--roxo-neon) calc(var(--score-deg, 0) * 1deg), rgba(255,255,255,0.05) calc(var(--score-deg, 0) * 1deg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .result-score-circle::after {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: var(--preto-card);
+        }
+
+        .result-score-value {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, var(--roxo-brilho));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: 1;
+            position: relative;
+        }
+
+        .result-message {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .result-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .result-detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 25px;
+            margin: 25px auto;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+
+        .result-detail-card p {
+            margin: 10px 0;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .result-detail-card .detail-value {
+            font-weight: 700;
+            color: var(--roxo-brilho);
+        }
+
+        .result-detail-card .icon-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--roxo-neon);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(168, 85, 247, 0.3);
+            border-top-color: var(--roxo-neon);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--roxo-brilho);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="loading-text">Carregando perguntas...</p>
+    </div>
+
+    <div class="main-container">
+        <h1>Quiz ENEM</h1>
+        <p class="subtitle">Domine as 4 áreas do conhecimento</p>
+        <div class="divider"></div>
+
+        <!-- Tela de nome -->
+        <div class="name-screen" id="nameScreen">
+            <h2>Seu nome para começar</h2>
+            <div class="input-wrapper">
+                <input type="text" id="playerNameInput" placeholder="Digite seu nome..." maxlength="30" autocomplete="off">
+            </div>
+            <button class="btn btn-primary" id="enterBtn">Entrar</button>
+        </div>
+
+        <!-- Área principal -->
+        <div id="mainContent" style="display: none;">
+            <div class="user-badge" id="userBadge">
+                <div class="name-display">
+                    <div class="avatar" id="avatarLetter">?</div>
+                    <span id="displayName">Visitante</span>
+                </div>
+                <div class="area-tag" id="currentAreaTag"></div>
+            </div>
+
+            <!-- Seleção de áreas -->
+            <div class="areas-grid" id="areasGrid">
+                <div class="area-card" onclick="startQuiz('linguagens')">
+                    <div class="area-icon">📚</div>
+                    <div class="area-name">Linguagens, Códigos e suas Tecnologias</div>
+                    <div class="area-disciplines">Língua Portuguesa · Literatura · Inglês · Espanhol · Artes · Educação Física</div>
+                </div>
+                <div class="area-card" onclick="startQuiz('matematica')">
+                    <div class="area-icon">🔢</div>
+                    <div class="area-name">Matemática e suas Tecnologias</div>
+                    <div class="area-disciplines">Matemática</div>
+                </div>
+                <div class="area-card" onclick="startQuiz('natureza')">
+                    <div class="area-icon">🔬</div>
+                    <div class="area-name">Ciências da Natureza e suas Tecnologias</div>
+                    <div class="area-disciplines">Biologia · Química · Física</div>
+                </div>
+                <div class="area-card" onclick="startQuiz('humanas')">
+                    <div class="area-icon">🌍</div>
+                    <div class="area-name">Ciências Humanas e Sociais Aplicadas</div>
+                    <div class="area-disciplines">Geografia · História · Filosofia · Sociologia</div>
+                </div>
+            </div>
+
+            <!-- Área do quiz -->
+            <div class="quiz-area" id="quizArea">
+                <div class="quiz-header">
+                    <span class="quiz-area-name-tag" id="quizAreaNameTag"></span>
+                    <div class="progress-wrapper">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="question-counter" id="questionCounter"></span>
+                </div>
+                <div class="question-card">
+                    <div class="question-number" id="questionNumber">1</div>
+                    <p class="question-text" id="questionText"></p>
+                </div>
+                <div class="options-list" id="optionsContainer"></div>
+                <div class="feedback" id="feedback"></div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goBack()">Voltar</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none;">Próxima</button>
+                    <button class="btn btn-finish" id="finishBtn" onclick="finishQuiz()" style="display:none;">Finalizar</button>
+                </div>
+            </div>
+
+            <!-- Tela de resultado -->
+            <div class="result-screen" id="resultScreen">
+                <div class="result-emoji" id="resultEmoji"></div>
+                <div class="result-score-circle" id="resultScoreCircle">
+                    <span class="result-score-value" id="resultScoreValue"></span>
+                </div>
+                <div class="result-message" id="resultMessage"></div>
+                <div class="result-detail-card">
+                    <p><span class="icon-dot"></span> Aluno: <span class="detail-value" id="resultName"></span></p>
+                    <p><span class="icon-dot"></span> Área: <span class="detail-value" id="resultArea"></span></p>
+                    <p><span class="icon-dot"></span> Acertos: <span class="detail-value" id="correctCount">0</span>/10</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="restartQuiz()">Refazer esta área</button>
+                    <button class="btn btn-secondary" onclick="showAreasSelect()">Escolher outra área</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ⚠️ SUBSTITUA PELA SUA CHAVE REAL DO SUPABASE (anon public)
+        const SUPABASE_URL = 'https://xnyazwabzzrztxfyzdvv.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_2T5S9R0SE6FbUbD73dctZQ_FqG9uxqT'; // Ex: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+        let supabase;
+        let useSupabase = false;
+
+        try {
+            if (SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.startsWith('eyJ')) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                useSupabase = true;
+                console.log('✅ Supabase conectado');
+            } else {
+                console.warn('⚠️ Chave Supabase não configurada – usando dados locais');
+            }
+        } catch (e) {
+            console.error('Erro Supabase:', e);
+        }
+
+        // Banco de dados local (40 perguntas)
+        const LOCAL_DB = {
+            linguagens: [
+                { question: "Qual a função da linguagem predominante em um texto publicitário?", options: ["Referencial", "Emotiva", "Conativa", "Metalinguística", "Fática"], correct: 2 },
+                { question: "No Modernismo, 'Macunaíma' é de qual autor?", options: ["Mário de Andrade", "Oswald de Andrade", "Drummond", "Bandeira", "Lispector"], correct: 0 },
+                { question: "Qual frase em inglês está correta?", options: ["She don't like coffee", "She doesn't likes coffee", "She doesn't like coffee", "She not like coffee", "She no like coffee"], correct: 2 },
+                { question: "O que é intertextualidade?", options: ["Coesão textual", "Diálogo entre textos", "Figura de linguagem", "Tipo de narrador", "Estrutura do parágrafo"], correct: 1 },
+                { question: "No espanhol, 'embarazada' significa:", options: ["Envergonhada", "Grávida", "Atrapalhada", "Cansada", "Feliz"], correct: 1 },
+                { question: "A Semana de Arte Moderna foi em:", options: ["1917", "1922", "1930", "1945", "1950"], correct: 1 },
+                { question: "Característica do Romantismo:", options: ["Objetividade", "Sentimentalismo", "Crítica social", "Cientificismo", "Formalismo"], correct: 1 },
+                { question: "Em 'Ela mesma fez', 'mesma' é:", options: ["Pronome relativo", "Demonstrativo", "Advérbio", "Pronome de reforço", "Adjetivo"], correct: 3 },
+                { question: "Gênero com tese e argumentos:", options: ["Notícia", "Dissertação-argumentativa", "Crônica", "Poema", "Carta pessoal"], correct: 1 },
+                { question: "O que significa a sigla IMC?", options: ["Índice de Massa Corporal", "Índice de Movimento Corporal", "Intensidade Muscular Cardíaca", "Indicador Metabólico Cardiovascular", "Nenhuma das anteriores"], correct: 0 }
+            ],
+            matematica: [
+                { question: "Qual o valor de x na equação 2x + 6 = 14?", options: ["2", "3", "4", "5", "8"], correct: 2 },
+                { question: "Qual a área de um triângulo de base 10 cm e altura 5 cm?", options: ["15 cm²", "25 cm²", "50 cm²", "30 cm²", "20 cm²"], correct: 1 },
+                { question: "Qual o valor de 20% de 150?", options: ["20", "25", "30", "35", "40"], correct: 2 },
+                { question: "Se f(x) = 3x + 2, qual o valor de f(4)?", options: ["10", "12", "14", "16", "18"], correct: 2 },
+                { question: "Qual a probabilidade de sair cara ao lançar uma moeda?", options: ["1", "1/2", "1/3", "1/4", "1/5"], correct: 1 },
+                { question: "Qual o volume de um cubo de aresta 3 cm?", options: ["9 cm³", "12 cm³", "18 cm³", "27 cm³", "36 cm³"], correct: 3 },
+                { question: "O valor de log₁₀ 1000 é:", options: ["1", "2", "3", "4", "5"], correct: 2 },
+                { question: "Em uma PA com a₁=5 e r=3, qual o 10º termo?", options: ["30", "32", "35", "38", "40"], correct: 1 },
+                { question: "O valor de sen(90°) é:", options: ["0", "1/2", "√3/2", "1", "√2/2"], correct: 3 },
+                { question: "Quantos anagramas tem a palavra 'LIVRO'?", options: ["60", "100", "120", "24", "240"], correct: 2 }
+            ],
+            natureza: [
+                { question: "Qual organela é responsável pela respiração celular?", options: ["Ribossomo", "Mitocôndria", "Lisossomo", "Complexo de Golgi", "Retículo endoplasmático"], correct: 1 },
+                { question: "Qual o número atômico do carbono?", options: ["4", "6", "8", "12", "14"], correct: 1 },
+                { question: "A aceleração da gravidade na Terra é aproximadamente:", options: ["5 m/s²", "9,8 m/s²", "15 m/s²", "2 m/s²", "20 m/s²"], correct: 1 },
+                { question: "O DNA é composto por:", options: ["Aminoácidos", "Nucleotídeos", "Lipídeos", "Carboidratos", "Proteínas"], correct: 1 },
+                { question: "Uma reação de neutralização envolve:", options: ["Ácido e base", "Metal e oxigênio", "Dois sais", "Água e óleo", "Gás e pó"], correct: 0 },
+                { question: "Qual a unidade de força no SI?", options: ["Joule", "Newton", "Pascal", "Watt", "Volt"], correct: 1 },
+                { question: "Seres autótrofos:", options: ["Alimentam-se de outros", "Produzem o próprio alimento", "São parasitas", "Vivem em colônias", "Não fazem fotossíntese"], correct: 1 },
+                { question: "Qual o pH de uma solução neutra?", options: ["0", "7", "14", "1", "10"], correct: 1 },
+                { question: "O que é inércia?", options: ["Tendência de manter o estado de movimento", "Força aplicada", "Velocidade constante", "Aceleração nula", "Peso do corpo"], correct: 0 },
+                { question: "A fotossíntese libera qual gás?", options: ["Gás carbônico", "Oxigênio", "Nitrogênio", "Metano", "Hélio"], correct: 1 }
+            ],
+            humanas: [
+                { question: "Em que ano ocorreu a Proclamação da República no Brasil?", options: ["1822", "1889", "1500", "1930", "1964"], correct: 1 },
+                { question: "Qual o maior bioma brasileiro?", options: ["Cerrado", "Amazônia", "Mata Atlântica", "Caatinga", "Pampa"], correct: 1 },
+                { question: "Quem disse 'Penso, logo existo'?", options: ["Platão", "Aristóteles", "Descartes", "Kant", "Nietzsche"], correct: 2 },
+                { question: "O que é fato social para Durkheim?", options: ["Algo individual", "Maneiras de agir coercitivas e exteriores", "Opinião pessoal", "Sentimento", "Escolha livre"], correct: 1 },
+                { question: "A Revolução Francesa teve como lema:", options: ["Paz e amor", "Liberdade, Igualdade, Fraternidade", "Ordem e progresso", "Deus e pátria", "União e força"], correct: 1 },
+                { question: "O que é êxodo rural?", options: ["Migração campo-cidade", "Migração cidade-campo", "Migração internacional", "Migração pendular", "Nomadismo"], correct: 0 },
+                { question: "Para Marx, a luta de classes ocorre entre:", options: ["Ricos e pobres", "Burguesia e proletariado", "Governo e povo", "Homens e mulheres", "Jovens e idosos"], correct: 1 },
+                { question: "Qual país NÃO faz fronteira com o Brasil?", options: ["Argentina", "Chile", "Uruguai", "Paraguai", "Bolívia"], correct: 1 },
+                { question: "O que foi o Tratado de Tordesilhas?", options: ["Acordo entre Portugal e Espanha", "Constituição", "Lei áurea", "Aliança militar", "Tratado comercial"], correct: 0 },
+                { question: "Etnocentrismo significa:", options: ["Valorizar a própria cultura como superior", "Respeitar todas as culturas", "Estudar etnias", "Globalização cultural", "Miscigenação"], correct: 0 }
+            ]
+        };
+
+        // Variáveis do jogo
+        let playerName, currentArea, currentQuestionIndex, score, answered, currentQuestions;
+
+        // DOM
+        const nameScreen = document.getElementById('nameScreen');
+        const mainContent = document.getElementById('mainContent');
+        const areasGrid = document.getElementById('areasGrid');
+        const quizArea = document.getElementById('quizArea');
+        const resultScreen = document.getElementById('resultScreen');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const enterBtn = document.getElementById('enterBtn');
+        const displayNameSpan = document.getElementById('displayName');
+        const avatarLetter = document.getElementById('avatarLetter');
+        const currentAreaTag = document.getElementById('currentAreaTag');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Evento do botão Entrar
+        enterBtn.addEventListener('click', enterQuiz);
+        playerNameInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') enterQuiz();
+        });
+
+        function enterQuiz() {
+            const name = playerNameInput.value.trim();
+            if (!name) {
+                alert('Por favor, digite seu nome!');
+                return;
+            }
+            playerName = name;
+            displayNameSpan.textContent = name;
+            avatarLetter.textContent = name.charAt(0).toUpperCase();
+            nameScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+            showAreasSelect();
+        }
+
+        function showAreasSelect() {
+            areasGrid.style.display = 'grid';
+            quizArea.style.display = 'none';
+            resultScreen.style.display = 'none';
+            currentAreaTag.style.display = 'none';
+            currentArea = '';
+            currentQuestionIndex = 0;
+            score = 0;
+            answered = false;
+        }
+
+        function getAreaShortName(key) {
+            const shorts = { linguagens: 'Linguagens', matematica: 'Matemática', natureza: 'Natureza', humanas: 'Humanas' };
+            return shorts[key] || key;
+        }
+
+        function getAreaName(key) {
+            const names = { linguagens: 'Linguagens, Códigos e suas Tecnologias', matematica: 'Matemática e suas Tecnologias', natureza: 'Ciências da Natureza e suas Tecnologias', humanas: 'Ciências Humanas e Sociais Aplicadas' };
+            return names[key] || key;
+        }
+
+        async function fetchQuestions(area) {
+            loadingOverlay.classList.add('active');
+            // Tenta Supabase primeiro
+            if (useSupabase && supabase) {
+                try {
+                    const { data, error } = await supabase.from('questions').select('*').eq('area', area);
+                    if (!error && data && data.length > 0) {
+                        const shuffled = data.sort(() => Math.random() - 0.5).slice(0, 10);
+                        loadingOverlay.classList.remove('active');
+                        return shuffled.map(q => ({
+                            question: q.question,
+                            options: [q.option_a, q.option_b, q.option_c, q.option_d, q.option_e],
+                            correct: q.correct_option
+                        }));
+                    }
+                } catch (e) {
+                    console.warn('Falha ao buscar no Supabase, usando dados locais.');
+                }
+            }
+            // Fallback local
+            if (LOCAL_DB[area]) {
+                const shuffled = [...LOCAL_DB[area]].sort(() => Math.random() - 0.5);
+                loadingOverlay.classList.remove('active');
+                return shuffled;
+            }
+            loadingOverlay.classList.remove('active');
+            return [];
+        }
+
+        async function startQuiz(area) {
+            currentArea = area;
+            currentQuestions = await fetchQuestions(area);
+            if (!currentQuestions.length) {
+                alert('Nenhuma pergunta disponível para esta área.');
+                return;
+            }
+            currentQuestionIndex = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('quizAreaNameTag').textContent = getAreaShortName(area);
+            currentAreaTag.textContent = '📌 ' + getAreaShortName(area);
+            currentAreaTag.style.display = 'inline-block';
+            areasGrid.style.display = 'none';
+            quizArea.style.display = 'block';
+            resultScreen.style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = currentQuestions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionCounter').textContent = `${currentQuestionIndex + 1}/10`;
+            document.getElementById('progressFill').style.width = `${(currentQuestionIndex / 10) * 100}%`;
+
+            const letters = ['A','B','C','D','E'];
+            document.getElementById('optionsContainer').innerHTML = q.options.map((opt, i) => `
+                <button class="option-btn" data-index="${i}">
+                    <span class="option-letter">${letters[i]}</span>${opt}
+                </button>
+            `).join('');
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => selectAnswer(parseInt(btn.dataset.index)));
+            });
+
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('finishBtn').style.display = 'none';
+            answered = false;
+        }
+
+        function selectAnswer(idx) {
+            if (answered) return;
+            answered = true;
+            const q = currentQuestions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === q.correct) btn.classList.add('correct');
+                if (i === idx && i !== q.correct) btn.classList.add('wrong');
+            });
+            const feedback = document.getElementById('feedback');
+            if (idx === q.correct) {
+                score++;
+                feedback.textContent = '✅ Resposta correta!';
+                feedback.className = 'feedback correct-fb';
+            } else {
+                feedback.textContent = '❌ Resposta incorreta';
+                feedback.className = 'feedback wrong-fb';
+            }
+            if (currentQuestionIndex === 9) {
+                document.getElementById('finishBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < 9) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            const finalScore = Math.round((score / 10) * 100);
+            document.getElementById('resultScoreValue').textContent = finalScore + ' pts';
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('resultName').textContent = playerName;
+            document.getElementById('resultArea').textContent = getAreaName(currentArea);
+            document.getElementById('resultScoreCircle').style.setProperty('--score-deg', (finalScore / 100) * 360);
+
+            let emoji, msg;
+            if (finalScore >= 90) { emoji = '🏆'; msg = 'Excelente!'; }
+            else if (finalScore >= 70) { emoji = '✨'; msg = 'Muito bom!'; }
+            else if (finalScore >= 50) { emoji = '📖'; msg = 'Continue estudando.'; }
+            else { emoji = '💪'; msg = 'Não desista!'; }
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('resultMessage').textContent = msg;
+
+            quizArea.style.display = 'none';
+            resultScreen.style.display = 'block';
+            currentAreaTag.style.display = 'none';
+        }
+
+        function goBack() {
+            if (confirm('Voltar? Seu progresso será perdido.')) showAreasSelect();
+        }
+
+        function restartQuiz() {
+            startQuiz(currentArea);
+        }
+    </script>
+</body>
+</html>
